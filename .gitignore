@@ -72,3 +72,5 @@ yarn-debug.log*
 
 Gemfile.lock
 yarn.lock
+
+config/database.yml
