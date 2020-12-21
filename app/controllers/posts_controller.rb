@@ -19,7 +19,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
         redirect_to @post
       else
-        render 'new'
+        render 'edit'
       end
   end
 
