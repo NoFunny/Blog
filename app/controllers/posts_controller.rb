@@ -8,54 +8,38 @@ class PostsController < ApplicationController
   end
 
   def show
-    unless Post.exists?(params[:id])
-      render file: Rails.root.join('/public/404.html'), status: :not_found
-      return
-    end
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
     @post = Post.find(params[:id])
   end
 
   def edit
-    unless Post.exists?(params[:id])
-      render file: Rails.root.join('/public/404.html'), status: :not_found
-      return
-    end
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
     @post = Post.find(params[:id])
   end
 
   def update
-    unless Post.exists?(params[:id])
-      render file: Rails.root.join('/public/404.html'), status: :not_found
-      return
-    end
-    @post = Post.find(params[:id])
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
 
-    if @post.update(post_params)
-      redirect_to @post
-    else
-      render 'edit'
-    end
+    @post = Post.find(params[:id])
+    @post.update(post_params) ? (redirect_to @post) : (render 'edit')
   end
 
   def destroy
-    @post = Post.find(params[:id])
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
 
+    @post = Post.find(params[:id])
     @post.destroy
     redirect_to posts_path
   end
 
   def create
     @post = Post.new(post_params)
-
-    if @post.save
-      redirect_to @post
-    else
-      render 'new'
-    end
+    @post.save ? (redirect_to @post) : (render 'new')
   end
 
   private
-
   def post_params
     params.require(:post).permit(:title, :body)
   end
