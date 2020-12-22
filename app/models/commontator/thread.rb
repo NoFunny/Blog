@@ -1,15 +1,15 @@
 module Commontator
-  class Thread < ActiveRecord::Base
+  class Thread < ApplicationRecord
     belongs_to :closer, polymorphic: true, optional: true
     belongs_to :commontable, polymorphic: true, optional: true
 
     has_many :comments, dependent: :destroy
     has_many :subscriptions, dependent: :destroy
 
-    validates_presence_of :commontable, unless: :is_closed?
-    validates_uniqueness_of :commontable_id,
-                            scope: :commontable_type,
-                            allow_nil: true
+    validates :commontable, presence: { unless: :is_closed? }
+    validates :commontable_id,
+              uniqueness: { scope: :commontable_type,
+                            allow_nil: true }
 
     def config
       @config ||= commontable.try(:commontable_config) || Commontator
@@ -61,11 +61,11 @@ module Commontator
         when :ve
           comment_arel = Comment.arel_table
           # Last comment with rating = 0
-          filtered_comments.where((comment_arel[:cached_votes_up] - comment_arel[:cached_votes_down]).gteq 0).count
+          filtered_comments.where((comment_arel[:cached_votes_up] - comment_arel[:cached_votes_down]).gteq(0)).count
         when :vl
           comment_arel = Comment.arel_table
           # First comment with rating = 0
-          filtered_comments.where((comment_arel[:cached_votes_up] - comment_arel[:cached_votes_down]).gt 0).count + 1
+          filtered_comments.where((comment_arel[:cached_votes_up] - comment_arel[:cached_votes_down]).gt(0)).count + 1
         else
           filtered_comments.count # Last comment
         end
@@ -73,13 +73,13 @@ module Commontator
     end
 
     def is_closed?
-      !closed_at.blank?
+      closed_at.present?
     end
 
     def close(user = nil)
       return false if is_closed?
 
-      self.closed_at = Time.now
+      self.closed_at = Time.zone.now
       self.closer = user
       save
     end
@@ -92,13 +92,13 @@ module Commontator
     end
 
     def subscribers
-      subscriptions.collect { |s| s.subscriber }
+      subscriptions.collect(&:subscriber)
     end
 
     def subscription_for(subscriber)
       return nil if !subscriber || !subscriber.is_commontator
 
-      subscriber.subscriptions.where(thread_id: self.id).first
+      subscriber.subscriptions.where(thread_id: id).first
     end
 
     def subscribe(subscriber)
@@ -164,7 +164,7 @@ module Commontator
     def can_subscribe?(user)
       thread_sub = config.thread_subscription.to_sym
       !is_closed? && !user.nil? && user.is_commontator && \
-        (thread_sub == :m || thread_sub == :b) && \
+        %i[m b].include?(thread_sub) && \
         can_be_read_by?(user)
     end
   end

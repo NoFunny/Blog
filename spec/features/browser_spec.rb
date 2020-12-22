@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.feature "Browser", type: :feature do
-  describe "the signin process", type: :feature do
-    it "signs me in" do
+RSpec.describe 'Browser', type: :feature do
+  describe 'the signin process', type: :feature do
+    it 'signs me in' do
       visit '/'
       click_link 'Регистрация'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Email', with: 'user@test.com'
         fill_in 'Пароль', with: 'password'
         fill_in 'Подтверждение пароля', with: 'password'
@@ -18,11 +18,11 @@ RSpec.feature "Browser", type: :feature do
       expect(page).to have_content 'Ваша учётная запись успешно подтверждена.'
     end
 
-    it "reconfirms me" do
+    it 'reconfirms me' do
       create(:user)
       visit '/users/sign_up'
       click_link 'Не получили письмо с подтверждением?'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Email', with: 'user@test.com'
       end
       click_button 'Отправить подтверждение снова'
@@ -33,12 +33,12 @@ RSpec.feature "Browser", type: :feature do
       expect(page).to have_content 'Ваша учётная запись успешно подтверждена.'
     end
 
-    it "resets my password" do
+    it 'resets my password' do
       user = create(:user)
       user.confirm
       visit '/users/sign_in'
       click_link 'Забыли пароль?'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Email', with: 'user@test.com'
       end
       click_button 'Отправить сброс пароля'
@@ -47,7 +47,7 @@ RSpec.feature "Browser", type: :feature do
       expect(current_email).to have_content 'Здраствуйте, user@test.com!'
       current_email.click_link 'Изменить пароль'
       expect(page).to have_content 'Изменение пароля'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Пароль', with: 'new_password'
         fill_in 'Подтверждение пароля', with: 'new_password'
       end
@@ -56,13 +56,13 @@ RSpec.feature "Browser", type: :feature do
     end
   end
 
-  describe "the login process", type: :feature do
-    it "logs me in" do
+  describe 'the login process', type: :feature do
+    it 'logs me in' do
       user = create(:user)
       user.confirm
       visit '/'
       click_link 'Вход'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Email', with: 'user@test.com'
         fill_in 'Пароль', with: 'password'
       end
@@ -71,11 +71,11 @@ RSpec.feature "Browser", type: :feature do
       expect(page).to have_content 'Пользователь: user@test.com'
     end
 
-    it "not logs me in without confirm" do
+    it 'not logs me in without confirm' do
       create(:user)
       visit '/'
       click_link 'Вход'
-      within("#new_user") do
+      within('#new_user') do
         fill_in 'Email', with: 'user@test.com'
         fill_in 'Пароль', with: 'password'
       end

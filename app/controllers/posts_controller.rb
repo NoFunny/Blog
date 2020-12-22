@@ -1,7 +1,6 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_post, only: %i[show edit update destroy]
 
   def index
     @posts = Post.all
@@ -12,9 +11,7 @@ class PostsController < ApplicationController
   end
 
   def new
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на создание статьи'
-    end
+    redirect_to posts_path, danger: 'У вас нет прав на создание статьи' if cannot? :manage, Post
     @post = Post.new
   end
 
@@ -28,16 +25,12 @@ class PostsController < ApplicationController
   end
 
   def edit
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на редактирование статьи'
-    end
+    redirect_to posts_path, danger: 'У вас нет прав на редактирование статьи' if cannot? :manage, Post
   end
 
   def update
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на изменение статьи'
-    end
-    if @post.update_attributes(post_params)
+    redirect_to posts_path, danger: 'У вас нет прав на изменение статьи' if cannot? :manage, Post
+    if @post.update(post_params)
       redirect_to @post, notice: 'Статья успешно изменена'
     else
       render :edit, danger: 'Ошибка при изменении статьи'
@@ -45,9 +38,8 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на удаление статьи' and return
-    end
+    redirect_to posts_path, danger: 'У вас нет прав на удаление статьи' and return if cannot? :manage, Post
+
     @post.destroy
     redirect_to posts_path, notice: 'Статья успешно удалена' and return
   end

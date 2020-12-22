@@ -8,7 +8,7 @@ class User < ApplicationRecord
   after_create :assign_default_role
 
   private def assign_default_role
-    self.add_role(:user) if self.roles.blank?
+    add_role(:user) if roles.blank?
   end
 
   acts_as_commontator
