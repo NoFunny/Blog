@@ -1,10 +1,10 @@
 module Commontator
-  class Subscription < ApplicationRecord
+  class Subscription < ActiveRecord::Base
     belongs_to :subscriber, polymorphic: true
     belongs_to :thread
 
-    validates :subscriber, :thread, presence: true
-    validates :thread_id, uniqueness: { scope: %i[subscriber_type subscriber_id] }
+    validates_presence_of :subscriber, :thread
+    validates_uniqueness_of :thread_id, scope: [:subscriber_type, :subscriber_id]
 
     def self.comment_created(comment)
       recipients = comment.thread.subscribers.reject { |s| s == comment.creator }
