@@ -51,7 +51,7 @@ RSpec.describe 'Posts', type: :request do
     it 'delete rand post' do
       post '/posts', params: { post: { title: new_post.title, body: new_post.body } }
       count_before = Post.count
-      delete '/posts/' + Post.limit(5).order('RANDOM()')[0].id.to_s
+      delete "/posts/#{Post.limit(5).order('RANDOM()')[0].id}"
       expect(Post.count).to equal(count_before - 1)
     end
   end

@@ -1,6 +1,8 @@
 class PostsController < ApplicationController
-  http_basic_authenticate_with name: "admin", password:"123",
-                               except: [:index, :show]
+  unless Rails.env.test?
+    http_basic_authenticate_with name: 'admin', password: '123',
+                                 except: %i[index show]
+  end
 
   def index
     @post = Post.all
