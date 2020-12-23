@@ -4,16 +4,16 @@
     render partial: 'body', locals: { comment: @comment }) %>");
 <% end %>
 
-<% if @new_comment.nil? %>
-$("#thread_<%= @thread.id %>_new_comment_form_div").hide();
-
-$("#thread_<%= @thread.id %>_new_comment_link_div").fadeIn();
-<% else %>
-$("#thread_<%= @thread.id %>_new_comment_form_div").html("<%= escape_javascript(
+<% unless @new_comment.nil? %>
+  $("#thread_<%= @thread.id %>_new_comment_form_div").html("<%= escape_javascript(
     render partial: 'form',
            locals: { comment: @new_comment,
                         thread: @thread,
                         per_page: @per_page }) %>");
+<% else %>
+  $("#thread_<%= @thread.id %>_new_comment_form_div").hide();
+
+  $("#thread_<%= @thread.id %>_new_comment_link_div").fadeIn();
 <% end %>
 
 <%= javascript_proc %>
