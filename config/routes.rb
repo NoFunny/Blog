@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   end
 
   resources :users
+
+  match '*path', :to => 'application#routing_error', via: [:get, :post]
 end
