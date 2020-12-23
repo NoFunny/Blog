@@ -13,5 +13,10 @@ RSpec.describe 'Pages', type: :request do
       get '/'
       expect(response).to have_http_status(:success)
     end
+
+    it 'returns http 404' do
+      get '/asdfsdafsdafsdafsdafasdfsaxzczxvasdf'
+      expect(response).to have_http_status(:not_found)
+    end
   end
 end

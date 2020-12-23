@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   post   'login'   => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
   resources :users
+
+  match '*path', :to => 'application#routing_error', via: [:get, :post]
 end
