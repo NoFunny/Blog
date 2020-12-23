@@ -1,63 +1,50 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+  http_basic_authenticate_with name: "admin", password:"123",
+                               except: [:index, :show]
 
   def index
-    @posts = Post.all
-  end
-
-  def show
-    commontator_thread_show(@post)
+    @post = Post.all
   end
 
   def new
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на создание статьи'
-    end
     @post = Post.new
+  end
+
+  def show
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
+    @post = Post.find(params[:id])
+  end
+
+  def edit
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
+    @post = Post.find(params[:id])
+    @post.update(post_params) ? (redirect_to @post) : (render 'edit')
+  end
+
+  def destroy
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect_to posts_path
   end
 
   def create
     @post = Post.new(post_params)
-    if @post.save
-      redirect_to @post, success: 'Статья успешно создана'
-    else
-      render :new, danger: 'Ошибка при создании статьи'
-    end
-  end
-
-  def edit
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на редактирование статьи'
-    end
-  end
-
-  def update
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на изменение статьи'
-    end
-    if @post.update_attributes(post_params)
-      redirect_to @post, notice: 'Статья успешно изменена'
-    else
-      render :edit, danger: 'Ошибка при изменении статьи'
-    end
-  end
-
-  def destroy
-    if cannot? :manage, Post
-      redirect_to posts_path, danger: 'У вас нет прав на удаление статьи' and return
-    end
-    @post.destroy
-    redirect_to posts_path, notice: 'Статья успешно удалена' and return
+    @post.save ? (redirect_to @post) : (render 'new')
   end
 
   private
 
-  def set_post
-    @post = Post.find(params[:id])
-  end
-
   def post_params
-    params.require(:post).permit(:title, :summary, :body, :image)
+    params.require(:post).permit(:title, :body)
   end
 end

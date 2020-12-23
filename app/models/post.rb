@@ -1,5 +1,4 @@
 class Post < ApplicationRecord
-  mount_uploader :image, ImageUploader
-  validates :title, :summary, :body, presence: true
-  acts_as_commontable
+  has_many :comments, dependent: :destroy
+  validates :title, presence: true, length: { minimum: 5 }
 end
