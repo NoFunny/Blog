@@ -21,7 +21,8 @@ class User < ApplicationRecord
     add_role(:user) if role.blank?
   end
 
-  # Возвращает дайджест данной строки.
+  # return digest for string
+
   def self.digest(string)
     cost = if ActiveModel::SecurePassword.min_cost
              BCrypt::Engine::MIN_COST
@@ -31,26 +32,26 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
-  # Возвращает случайный токен
+  # return random token
   def self.new_token
     SecureRandom.urlsafe_base64
   end
 
-  # Запоминает пользователя в базе данных для использования в постоянной сессии.
+  # remember user in DB
   def remember
     self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token))
+    update(remember_digest: User.digest(remember_token))
   end
 
-  # Возвращает true, если предоставленный токен совпадает с дайджестом.
+  # returns true if token is the same as digest
   def authenticated?(remember_token)
     return false if remember_digest.nil?
 
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
-  # Забывает пользователя
+  # forget user
   def forget
-    update_attribute(:remember_digest, nil)
+    update(remember_digest: nil)
   end
 end

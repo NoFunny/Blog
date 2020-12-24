@@ -9,7 +9,7 @@ gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 gem 'pg', '>= 0.18', '< 2.0'
 # Autorisation gem with roles
 gem 'cancancan'
-#hash
+# hash
 gem 'bcrypt'
 # Use Puma as the app server
 gem 'puma', '~> 4.1'

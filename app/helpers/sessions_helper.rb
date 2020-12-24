@@ -1,17 +1,17 @@
 module SessionsHelper
-  # Осуществляет вход данного пользователя.
+  # login
   def log_in(user)
     session[:user_id] = user.id
   end
 
-  # Запоминает пользователя в постоянную сессию.
+  # remember user session
   def remember(user)
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
 
-  # Возвращает пользователя, соответствующего remember-токену в куки.
+  # return user for corresponding cookie
   def current_user
     if (user_id = session[:user_id])
       @current_user ||= User.find_by(id: user_id)
@@ -24,21 +24,21 @@ module SessionsHelper
     end
   end
 
-  # Забывает постоянную сессии.
+  # forget user
   def forget(user)
     user.forget
     cookies.delete(:user_id)
     cookies.delete(:remember_token)
   end
 
-  # Осуществляет выход текущего пользователя.
+  # logout user
   def log_out
     forget(current_user)
     session.delete(:user_id)
     @current_user = nil
   end
 
-  # Возвращает true, если пользователь вошел, иначе false.
+  # return true when user logged in, false otherwise
   def logged_in?
     !current_user.nil?
   end

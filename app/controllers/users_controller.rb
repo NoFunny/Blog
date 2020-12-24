@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   def show
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless User.exists?(params[:id])
+
     @user = User.find(params[:id])
   end
 
