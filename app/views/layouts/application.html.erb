@@ -13,14 +13,18 @@
 <div class="bg-dark text-white d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom shadow-sm">
   <h5 class="my-0 mr-md-auto font-weight-normal"><%= link_to "SUPER BLOG", home_path, :class => "text-white" %></h5>
   <nav class="my-2 my-md-0 mr-md-3">
-    <% if logged_in? %>
-      <span>Привет, мой узкоглазый друг <%= link_to current_user.name, '/users/'+current_user.id.to_s %>!</span>
-    <%end %>
     <span class=""><%= link_to "Главная страница", home_path, :class => "btn btn-dark" %></span>
     <span class=""><%= link_to "О нас", about_path,  :class => "btn btn-dark" %></span>
+    <% if logged_in? %>
+      <% if can? :manage, @all %>
+        <span>Привет, мой узкоглазый друг(Админ) <%= link_to current_user.name, '/users/'+current_user.id.to_s %>!</span>
+      <% elsif can? :read, @all %>
+        <span>Привет, мой узкоглазый друг(Просто смертный) <%= link_to current_user.name, '/users/'+current_user.id.to_s %>!</span>
+      <%end %>
   </nav>
-  <% if logged_in? %>
-    <span class=""><%= link_to "Добавление поста", new_post_path, :class => "btn btn-dark" %></span>
+      <% if can? :manage, @all %>
+        <span class=""><%= link_to "Добавление поста", new_post_path, :class => "btn btn-dark" %></span>
+      <% end %>
     <span class=""><%= link_to "Выход", logout_path , method: "get", :class => "btn btn-dark" %></span>
 <% else %>
     <span class=""><%= link_to "Вход", login_path, :class => "btn btn-dark" %></span>
