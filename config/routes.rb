@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get 'show_user' => 'users#show'
   post 'login' => 'sessions#create'
   get 'logout' => 'sessions#destroy'
+
+  delete 'deletecomment' => 'comments#delete'
+
   resources :users
 
   match '*path', to: 'application#routing_error', via: %i[get post]
