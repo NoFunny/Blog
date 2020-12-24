@@ -19,8 +19,7 @@
 Добавление комментария
 <%= form_for([@post, @post.comments.build]) do |f| %>
   <p>
-    Ты <%= params[current_user.name] %> <br>
-    <%#= f.text_field(:username, {:class => 'form-control'}) %>
+    Ты <%= current_user.name %> <br>
   </p>
   <p>
     Текст комментария <br>
