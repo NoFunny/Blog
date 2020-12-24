@@ -7,11 +7,12 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  get   'signup' =>   'users#new'
-  get    'login'   => 'sessions#new'
-  post   'login'   => 'sessions#create'
-  delete 'logout'  => 'sessions#destroy'
+  get 'signup' => 'users#new'
+  get 'login' => 'sessions#new'
+  get 'show_user' => 'users#show'
+  post 'login' => 'sessions#create'
+  get 'logout' => 'sessions#destroy'
   resources :users
 
-  match '*path', :to => 'application#routing_error', via: [:get, :post]
+  match '*path', to: 'application#routing_error', via: %i[get post]
 end
