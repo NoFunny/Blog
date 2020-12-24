@@ -10,28 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_23_173601) do
+ActiveRecord::Schema.define(version: 2020_12_24_092140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "abilities", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "accounts", force: :cascade do |t|
-    t.string "login"
-    t.string "password"
-    t.integer "health"
-    t.integer "tired"
-    t.integer "funny"
-    t.integer "mana"
-    t.integer "money"
-    t.integer "points"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
 
   create_table "comments", force: :cascade do |t|
     t.string "username"
@@ -49,14 +31,6 @@ ActiveRecord::Schema.define(version: 2020_12_23_173601) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_products_on_user_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -64,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_12_23_173601) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "password_digest"
     t.string "remember_digest"
+    t.string "role"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

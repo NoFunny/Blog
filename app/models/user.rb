@@ -11,6 +11,16 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
 
+  def admin?
+    self.role == 'admin'
+  end
+
+  after_create :assign_default_role
+
+  private def assign_default_role
+    add_role(:user) if role.blank?
+  end
+
   # Возвращает дайджест данной строки.
   def self.digest(string)
     cost = if ActiveModel::SecurePassword.min_cost

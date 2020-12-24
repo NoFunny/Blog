@@ -2,10 +2,17 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    can :read, :all # permissions for every user, even if not logged in
-    return if user.blank?
+    # for any visitor or user
+    can :read, :all
 
-    can :manage, Post, user_id: user.id
-    can :manage, :all if user.admin? # additional permissions for administrators
+    if user
+      if user.admin?
+        # admins can do any action on any model or action
+        can :manage, :all
+      else
+        # regular users can read all content
+        can :read, :all
+      end
+    end
   end
 end

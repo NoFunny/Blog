@@ -11,7 +11,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: postgres
+  database: postgresdb
   pool: 5
   username: postgres
   password: 132968
@@ -37,7 +37,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: postgres
+  database: postgresdb
   pool: 5
   username: postgres
   password: 132968
@@ -45,7 +45,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: postgres
+  database: postgresdb
   pool: 5
   username: postgres
   password: 132968
