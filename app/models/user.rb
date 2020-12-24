@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
 
   def admin?
-    self.role == 'admin'
+    role == 'admin'
   end
 
   after_create :assign_default_role
