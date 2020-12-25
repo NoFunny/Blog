@@ -36,10 +36,28 @@ class PostsController < ApplicationController
     redirect_to posts_path
   end
 
+  def inc_rating
+    @post = Post.find(params[:id])
+    # p "123123123123     "+:post.to_s
+    @post.update(rating: @post.rating + 1)
+    # @post.update(params.require(:post).permit(:rating))
+    redirect_to @post
+  end
+
+  def dec_rating
+    @post = Post.find(params[:id])
+    # @post.rating -= 1
+    @post.update(rating: @post.rating - 1)
+    redirect_to @post
+  end
+
   def create
     @post = Post.new(post_params)
+    @post.rating = 0
     @post.save ? (redirect_to @post) : (render 'new')
   end
+
+  def add_rating; end
 
   private
 

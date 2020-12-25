@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
 
   delete 'deletecomment' => 'comments#delete'
-
+  match  'inc', to: 'posts#inc_rating',  via: %i[get post]
+  match  'dec', to: 'posts#dec_rating',  via: %i[get post]
   resources :users
 
   match '*path', to: 'application#routing_error', via: %i[get post]

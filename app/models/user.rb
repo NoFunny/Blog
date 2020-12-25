@@ -17,10 +17,6 @@ class User < ApplicationRecord
 
   after_create :assign_default_role
 
-  private def assign_default_role
-    add_role(:user) if role.blank?
-  end
-
   # return digest for string
 
   def self.digest(string)
@@ -53,5 +49,11 @@ class User < ApplicationRecord
   # forget user
   def forget
     update(remember_digest: nil)
+  end
+
+  private
+
+  def assign_default_role
+    add_role(:user) if role.blank?
   end
 end

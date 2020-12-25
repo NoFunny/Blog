@@ -6,7 +6,10 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+      return render file: Rails.root.join('/public/404.html'),
+                    status: :not_found
+    end
 
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
@@ -15,22 +18,28 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+      return render file: Rails.root.join('/public/404.html'),
+                    status: :not_found
+    end
 
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
   end
 
   def update
-    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+      return render file: Rails.root.join('/public/404.html'), status: :not_found
+    end
 
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
     @comment.update(comment_params) ? (redirect_to @post) : (render 'edit')
   end
-    private
 
-    def comment_params
-      params.require(:comment).permit(:body)
-    end
+  private
+
+  def comment_params
+    params.require(:comment).permit(:body)
+  end
 end
