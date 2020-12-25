@@ -5,11 +5,13 @@ class CommentsController < ApplicationController
     redirect_to post_path(@post)
   end
 
-  def delete
+  def destroy
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id])
+
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
     @comment.destroy
-    redirect_to post_path(@post)
+    redirect_to @post
   end
 
   def edit
