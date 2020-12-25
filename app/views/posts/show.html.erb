@@ -11,7 +11,13 @@
 <h1>Все комментарии</h1>
 <% @post.comments.each do |comment| %>
   <div class="alert alert-light">
-    <p><strong><%= comment.username %></strong>: <%= comment.body %><%= button_to "delete", {controller: :comments, action: 'delete', id: comment.id, post_id: @post.id }, method: :delete %></p>
+    <p><strong><%= comment.username %></strong>: <%= comment.body %></p>
+      <% if can? :manage, @all %>
+      <div style="display: inline-flex">
+        <%= link_to "Редактировать", edit_post_comment_path(@post, comment), :class => 'btn btn-warning' %>
+      <span><%= button_to "Удалить пост", {controller: :comments, action: 'delete', id: comment.id, post_id: @post.id }, method: :delete, :class => 'btn btn-danger'%></span>
+      </div>
+      <% end %>
   </div>
 <% end %>
 <hr>
