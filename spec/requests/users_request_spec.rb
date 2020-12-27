@@ -37,9 +37,7 @@ RSpec.describe 'Users', type: :request do
            params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
                              password_confirmation: '123456789' } }
 
-      rand_usr = User.limit(5).order('RANDOM()')[0]
-
-      get "/users/#{rand_usr.id}"
+      get "/users/#{User.limit(5).order('RANDOM()')[0].id}"
       expect(response).to have_http_status(:success)
     end
   end
