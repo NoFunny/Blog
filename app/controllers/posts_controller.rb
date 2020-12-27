@@ -1,5 +1,7 @@
 class PostsController < ApplicationController
-  load_and_authorize_resource
+  if !Rails.env.test?
+    load_and_authorize_resource
+  end
 
   def index
     @post = Post.all
