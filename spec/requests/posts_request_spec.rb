@@ -55,4 +55,18 @@ RSpec.describe 'Posts', type: :request do
       expect(Post.count).to equal(count_before - 1)
     end
   end
+
+  describe 'update' do
+    new_post = FactoryBot.create(:post)
+
+    it 'post' do
+      post '/posts', params: { post: { title: new_post.title, body: new_post.body } }
+
+      rand_post = Post.limit(5).order('RANDOM()')[0]
+
+      patch "/posts/#{rand_post.id}", params: { post: { title: 'sdfbjdfsgsdf', body: 'dsafgdfgdfgdfs' } }
+
+      expect(Post.find(rand_post.id).title).to eq('sdfbjdfsgsdf')
+    end
+  end
 end
