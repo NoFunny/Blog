@@ -20,3 +20,10 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+
+
+RSpec/ExpectActual:
+  Description: Checks for `expect(...)` calls containing literal values.
+  Enabled: true
+  Exclude:
+  - spec/requests/**/*
