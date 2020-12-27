@@ -3,7 +3,7 @@ class VotesController < ApplicationController
     @post = Post.find(params[:id])
     unless @post.votes.exists?(params[:user_id])
       @post.update(rating: @post.rating + 1)
-      @post.votes.new(user_id: params[:user_id]).save
+      @post.votes.create user_id: params[:user_id]
     end
     redirect_to @post
   end
@@ -12,7 +12,7 @@ class VotesController < ApplicationController
     @post = Post.find(params[:id])
     unless @post.votes.exists?(params[:user_id])
       @post.update(rating: @post.rating - 1)
-      @post.votes.new(user_id: params[:user_id]).save
+      @post.votes.create user_id: params[:user_id]
     end
     redirect_to @post
   end

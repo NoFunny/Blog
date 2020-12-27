@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
 
   def admin?
-    @role == 'admin'
+    self.role == 'admin'
   end
 
   after_create :assign_default_role
@@ -48,6 +48,6 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    @role = :user if role.blank?
+    self.role = :user if role.blank?
   end
 end
