@@ -28,7 +28,7 @@ RSpec.describe 'Sessions', type: :request do
 
       post '/login', params: { session: { email: 'qwerty@mail.ru', password: '654456' } }
 
-      expect(response).to have_http_status(401)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 end

@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   def create
-    return render file: Rails.root.join('/public/404.html'), status: :not_found unless current_user != nil
+    return render file: Rails.root.join('/public/404.html'), status: :not_found if current_user.nil?
 
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create username: current_user.name, body: params[:comment][:body]
@@ -8,7 +8,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && current_user != nil
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && !current_user.nil?
       return render file: Rails.root.join('/public/404.html'),
                     status: :not_found
     end
@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
   end
 
   def edit
-    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && current_user != nil
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && !current_user.nil?
       return render file: Rails.root.join('/public/404.html'),
                     status: :not_found
     end
@@ -30,7 +30,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && current_user != nil
+    unless Post.exists?(params[:post_id]) && Post.find(params[:post_id]).comments.exists?(params[:id]) && !current_user.nil?
       return render file: Rails.root.join('/public/404.html'), status: :not_found
     end
 

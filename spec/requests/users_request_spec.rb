@@ -34,12 +34,12 @@ RSpec.describe 'Users', type: :request do
   describe 'get existing' do
     it 'new valid user' do
       post '/users',
-            params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
-                              password_confirmation: '123456789' } }
+           params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
+                             password_confirmation: '123456789' } }
 
       rand_usr = User.limit(5).order('RANDOM()')[0]
 
-      get '/users/' + rand_usr.id.to_s
+      get "/users/#{rand_usr.id}"
       expect(response).to have_http_status(:success)
     end
   end
