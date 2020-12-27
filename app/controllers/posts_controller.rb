@@ -11,8 +11,6 @@ class PostsController < ApplicationController
 
   def show
     return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
-
-    @post = Post.find(params[:id])
   end
 
   def edit

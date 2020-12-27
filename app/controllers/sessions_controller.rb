@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       remember user
       redirect_to user
     else
-      render 'new'
+      render 'new', status: :unauthorized
     end
   end
 

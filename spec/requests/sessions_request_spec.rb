@@ -20,5 +20,15 @@ RSpec.describe 'Sessions', type: :request do
 
       expect(:login).to redirect_to(redirect_path)
     end
+
+    it 'unable to login login' do
+      post '/users',
+           params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
+                             password_confirmation: '123456789' } }
+
+      post '/login', params: { session: { email: 'qwerty@mail.ru', password: '654456' } }
+
+      expect(response).to have_http_status(401)
+    end
   end
 end

@@ -14,12 +14,33 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'create' do
-    it 'new user' do
+    it 'new valid user' do
       expect do
         post '/users',
              params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
                                password_confirmation: '123456789' } }
       end.to change(User, :count).by(1)
+    end
+
+    it 'new invalid user' do
+      expect do
+        post '/users',
+             params: { user: { name: 'someValidName', email: 'q', password: '123456789',
+                               password_confirmation: '123456789' } }
+      end.to change(User, :count).by(0)
+    end
+  end
+
+  describe 'get existing' do
+    it 'new valid user' do
+      post '/users',
+            params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
+                              password_confirmation: '123456789' } }
+
+      rand_usr = User.limit(5).order('RANDOM()')[0]
+
+      get '/users/' + rand_usr.id.to_s
+      expect(response).to have_http_status(:success)
     end
   end
 end
