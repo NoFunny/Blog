@@ -54,6 +54,8 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    add_role(:user) if role.blank?
+    if role.blank?
+      role = :user
+    end
   end
 end
