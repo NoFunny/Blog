@@ -14,9 +14,11 @@ RSpec.describe 'Users', type: :request do
   end
 
   describe 'create' do
-    it 'GET /users/25' do
+    it 'new user' do
       expect do
-        post '/users', params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789', password_confirmation: '123456789'} }
+        post '/users',
+             params: { user: { name: 'someValidName', email: 'qwerty@mail.ru', password: '123456789',
+                               password_confirmation: '123456789' } }
       end.to change(User, :count).by(1)
     end
   end
