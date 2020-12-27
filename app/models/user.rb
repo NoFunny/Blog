@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 6 }
 
   def admin?
-    role == 'admin'
+    @role == 'admin'
   end
 
   after_create :assign_default_role
@@ -20,11 +20,7 @@ class User < ApplicationRecord
   # return digest for string
 
   def self.digest(string)
-    cost = if ActiveModel::SecurePassword.min_cost
-             BCrypt::Engine::MIN_COST
-           else
-             BCrypt::Engine.cost
-           end
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
@@ -41,9 +37,7 @@ class User < ApplicationRecord
 
   # returns true if token is the same as digest
   def authenticated?(remember_token)
-    return false if remember_digest.nil?
-
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    remember_digest.nil? ? false : BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
   # forget user
@@ -54,8 +48,6 @@ class User < ApplicationRecord
   private
 
   def assign_default_role
-    if role.blank?
-      role = :user
-    end
+    @role = :user if role.blank?
   end
 end
