@@ -5,8 +5,8 @@
 <p>Рейтинг этого поста: <%= @post.rating.to_s %></p>
 <% if logged_in? %>
   <div style="display: flex">
-    <span><%= button_to "+", {controller: :posts, action: :inc_rating, id: @post}, :class => 'btn btn-warning' %></span>
-    <span style="margin-left: 5px"><%= button_to "-", {controller: :posts, action: :dec_rating, id: @post}, :class => 'btn btn-warning' %></span>
+    <span><%= button_to "+", {controller: :votes, action: :inc_rating, id: @post, user_id: current_user.id}, :class => 'btn btn-warning' %></span>
+    <span style="margin-left: 5px"><%= button_to "-", {controller: :votes, action: :dec_rating, id: @post, user_id: current_user.id}, :class => 'btn btn-warning' %></span>
   </div>
 <% end %>
 <hr>

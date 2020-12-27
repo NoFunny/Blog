@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'about' => 'pages#about', as: 'about'
   resources :posts do
     resources :comments
+    resources :votes
   end
 
   get 'signup' => 'users#new'
@@ -14,8 +15,8 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
 
   delete 'deletecomment' => 'comments#delete'
-  match  'inc', to: 'posts#inc_rating',  via: %i[get post]
-  match  'dec', to: 'posts#dec_rating',  via: %i[get post]
+  match  'inc', to: 'votes#inc_rating',  via: %i[get post]
+  match  'dec', to: 'votes#dec_rating',  via: %i[get post]
   resources :users
 
   match '*path', to: 'application#routing_error', via: %i[get post]
