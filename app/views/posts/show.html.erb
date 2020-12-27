@@ -1,3 +1,28 @@
+<title>SUPER BLOG</title>
+<head>
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script>
+      $(document).ready(function () {
+      $(".vote_inc").on('click', function () {
+          $(this).attr('disabled', true);
+          $(".vote_dec").attr("disabled", false);
+          url = this.parentElement.action
+          console.log(this.parentElement.getAttribute("action"))
+          jQuery.post({
+              url: this.parentElement.getAttribute("action"),
+          })
+
+      });
+      $(".vote_dec").on('click', function () {
+          $(this).attr('disabled', true);
+          $(".vote_inc").attr("disabled", false);
+          jQuery.post({
+              url: this.parentElement.action,
+          })
+      })
+  })</script>
+  <title>SUPER BLOG</title>
+</head>
 <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 <h1><%= @post.title %></h1>
 <p><%= @post.body %></p>
@@ -5,8 +30,8 @@
 <p>Рейтинг этого поста: <%= @post.rating.to_s %></p>
 <% if logged_in? %>
   <div style="display: flex">
-    <span><%= button_to "+", {controller: :posts, action: :inc_rating, id: @post}, :class => 'btn btn-warning' %></span>
-    <span style="margin-left: 5px"><%= button_to "-", {controller: :posts, action: :dec_rating, id: @post}, :class => 'btn btn-warning' %></span>
+    <span><%= button_to "+", {controller: :posts, action: :inc_rating, id: @post}, remote: true, :class => 'vote_inc btn btn-warning' %></span>
+    <span style="margin-left: 5px"><%= button_to "-", {controller: :posts, action: :dec_rating, id: @post}, remote: true, :class => 'vote_dec btn btn-warning' %></span>
   </div>
 <% end %>
 <hr>
