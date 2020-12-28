@@ -21,8 +21,8 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: localhost
-  username: DigitalExamen
-  password: ruby123
+  username: postgres
+  password: postgres
 
 development:
   <<: *default
@@ -67,7 +67,7 @@ test:
 # ever seen by anyone, they now have access to your database.
 #
 # Instead, provide the password as a unix environment variable when you boot
-# the app. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
+# the product_list. Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full rundown on how to provide these environment variables in a
 # production deployment.
 #
@@ -84,5 +84,5 @@ test:
 production:
   <<: *default
   database: rails_starter_project_production
-  username: DigitalExamen
-  password: ruby123
+  username: rails_starter_project
+  password: <%= ENV['RAILS_STARTER_PROJECT_DATABASE_PASSWORD'] %>
