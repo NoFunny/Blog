@@ -4,7 +4,9 @@ Rails.application.routes.draw do
 
   get 'about' => 'pages#about', as: 'about'
   resources :posts do
-    resources :comments
+    resources :comments do
+      resources :comments, controller: 'replies'
+    end
     resources :votes
   end
 
@@ -15,6 +17,7 @@ Rails.application.routes.draw do
   get 'logout' => 'sessions#destroy'
 
   delete 'deletecomment' => 'comments#delete'
+
   match  'inc', to: 'votes#inc_rating',  via: %i[get post]
   match  'dec', to: 'votes#dec_rating',  via: %i[get post]
   resources :users

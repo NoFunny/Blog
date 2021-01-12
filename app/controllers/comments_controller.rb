@@ -1,4 +1,9 @@
 class CommentsController < ApplicationController
+  def new
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+  end
+  
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create username: current_user.name, body: params[:comment][:body]
@@ -21,6 +26,13 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
     @comment.update(comment_params) ? (redirect_to @post) : (render 'edit')
+  end
+
+  def reply_create
+    @post = Post.find(params[:post_id])
+    @comment = @post.comments.find(params[:id])
+    @comment.comments.create username: current_user.name, body: params[:comment][:body]
+    redirect_to post_path(@post)
   end
 
   private
