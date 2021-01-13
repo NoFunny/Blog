@@ -25,14 +25,16 @@
 <% @post.comments.each do |comment| %>
   <div class="alert alert-light">
     <p><strong><%= comment.username %></strong>: <%= comment.body %></p>
+    <div style="text-indent: 20px">
     <% comment.comments.each do |reply| %>
-      <p><strong><%= reply.username %></strong>: <%= reply.body %></p>
+        <p><strong><%= reply.username %></strong>: <%= reply.body %></p>
     <% end %>
+    </div>
       <% if can? :manage, @all %>
         <%= link_to "Редактировать", edit_post_comment_path(@post, comment), :class => 'btn btn-warning' %>
         <%= link_to "Удалить комментарий", post_comment_path(@post, comment), method: :delete, data: {confirm: "Хотите удалить комментарий?"}, :class => 'btn btn-danger' %>
       <% end %>
-    <%= link_to "Комментировать", new_post_comment_comment_path(@post, comment), :class => 'btn btn-warning' %>
+    <%= link_to "Ответить", new_post_comment_comment_path(@post, comment), :class => 'btn btn-warning' %>
   </div>
 <% end %>
 <hr>
