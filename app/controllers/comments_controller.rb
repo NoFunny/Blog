@@ -3,7 +3,7 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
   end
-  
+
   def create
     @post = Post.find(params[:post_id])
     @comment = @post.comments.create username: current_user.name, body: params[:comment][:body]
