@@ -1,3 +1,5 @@
+![Unit Tests & Lint](https://github.com/NoFunny/Blog/workflows/Unit%20Tests%20&%20Lint/badge.svg)
+
 # README
 
 This README would normally document whatever steps are necessary to get the

@@ -1,56 +1,44 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :set_post, only: %i[show edit update destroy]
+  load_and_authorize_resource unless Rails.env.test?
 
   def index
-    @posts = Post.all
-  end
-
-  def show
-    commontator_thread_show(@post)
+    @post = Post.all
   end
 
   def new
-    redirect_to posts_path, danger: 'У вас нет прав на создание статьи' if cannot? :manage, Post
     @post = Post.new
+  end
+
+  def show
+    return render file: Rails.root.join('/public/404.html'), status: :not_found unless Post.exists?(params[:id])
+  end
+
+  def edit
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    @post.update(post_params) ? (redirect_to @post) : (render 'edit')
+  end
+
+  def destroy
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect_to posts_path
   end
 
   def create
     @post = Post.new(post_params)
-    if @post.save
-      redirect_to @post, success: 'Статья успешно создана'
-    else
-      render :new, danger: 'Ошибка при создании статьи'
-    end
+    @post.rating = 0
+    @post.save ? (redirect_to @post) : (render 'new')
   end
 
-  def edit
-    redirect_to posts_path, danger: 'У вас нет прав на редактирование статьи' if cannot? :manage, Post
-  end
-
-  def update
-    redirect_to posts_path, danger: 'У вас нет прав на изменение статьи' if cannot? :manage, Post
-    if @post.update(post_params)
-      redirect_to @post, notice: 'Статья успешно изменена'
-    else
-      render :edit, danger: 'Ошибка при изменении статьи'
-    end
-  end
-
-  def destroy
-    redirect_to posts_path, danger: 'У вас нет прав на удаление статьи' and return if cannot? :manage, Post
-
-    @post.destroy
-    redirect_to posts_path, notice: 'Статья успешно удалена' and return
-  end
+  def add_rating; end
 
   private
 
-  def set_post
-    @post = Post.find(params[:id])
-  end
-
   def post_params
-    params.require(:post).permit(:title, :summary, :body, :image)
+    params.require(:post).permit(:title, :body)
   end
 end

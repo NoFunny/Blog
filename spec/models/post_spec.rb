@@ -1,31 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  describe 'validate post' do
-    subject { described_class.new attrs }
-
-    context 'title, summary and body are filled' do
-      let(:attrs) { { title: 'title', summary: 'summary', body: 'body' } }
-
-      it { is_expected.to be_valid }
+  describe 'add a post' do
+    it 'create valid post' do
+      test_post = described_class.new(title: 'Test post', body: 'there is some body')
+      expect(test_post).to be_valid
     end
 
-    context 'summary is not filled' do
-      let(:attrs) { { title: 'title', body: 'body' } }
-
-      it { is_expected.not_to be_valid }
-    end
-
-    context 'title is not filled' do
-      let(:attrs) { { summary: 'summary', body: 'body' } }
-
-      it { is_expected.not_to be_valid }
-    end
-
-    context 'body is not filled' do
-      let(:attrs) { { title: 'title', summary: 'summary' } }
-
-      it { is_expected.not_to be_valid }
+    it 'create bad post' do
+      test_post = described_class.new(title: 'T', body: '')
+      expect(test_post).not_to be_valid
     end
   end
 end

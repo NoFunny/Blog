@@ -14,6 +14,16 @@ Style/FrozenStringLiteralComment:
 Metrics/MethodLength:
   Max: 20
 
+Metrics/AbcSize:
+  Max: 25
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*_spec.rb'
+
+
+RSpec/ExpectActual:
+  Description: Checks for `expect(...)` calls containing literal values.
+  Enabled: true
+  Exclude:
+  - spec/requests/**/*
